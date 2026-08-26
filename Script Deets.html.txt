@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Daily Sales Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --brand:    #1F4E79;
+    --accent:   #2E75B6;
+    --light:    #EBF3FB;
+    --success:  #1A7A4A;
+    --error:    #C0392B;
+    --text:     #1a1a2e;
+    --muted:    #6b7280;
+    --border:   #d1dce8;
+    --white:    #ffffff;
+    --radius:   14px;
+    --shadow:   0 4px 24px rgba(31,78,121,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(145deg, #0d2b4e 0%, #1F4E79 50%, #2E75B6 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px 16px 48px;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 480px;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--brand);
+    padding: 28px 28px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    right: -30px; top: -30px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .header-logo {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .header-date {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 30px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.9);
+  }
+  .header-date svg { opacity: 0.7; }
+
+  /* ── Rep selector ── */
+  .rep-bar {
+    background: var(--light);
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .rep-bar label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--brand);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+  }
+  .rep-bar select {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  /* ── Form body ── */
+  .form-body { padding: 24px 28px 28px; }
+
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 7px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(46,117,182,0.12);
+  }
+  .field textarea { resize: none; height: 80px; }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  /* Sales input with TZS prefix */
+  .money-wrap {
+    position: relative;
+  }
+  .money-wrap .prefix {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .money-wrap input {
+    padding-left: 52px !important;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  /* Submit button */
+  .btn-submit {
+    width: 100%;
+    background: var(--brand);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 6px;
+    letter-spacing: 0.3px;
+  }
+  .btn-submit:hover { background: #163d61; }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled { background: #93b4d0; cursor: not-allowed; }
+
+  /* Feedback states */
+  .feedback {
+    display: none;
+    margin-top: 16px;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .feedback.success {
+    background: #e8f8f1;
+    border: 1.5px solid #a3d9bc;
+    color: var(--success);
+  }
+  .feedback.error {
+    background: #fdf0ee;
+    border: 1.5px solid #f0a89e;
+    color: var(--error);
+  }
+
+  /* Loading spinner */
+  .spinner {
+    display: inline-block;
+    width: 16px; height: 16px;
+    border: 2.5px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  .field-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+  }
+
+  /* Required star */
+  .req { color: #e74c3c; margin-left: 2px; }
+
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- Header: auto date -->
+  <div class="header">
+    <div class="header-logo">Solutech Field App</div>
+    <h1>Daily Sales Report</h1>
+    <div class="header-date">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      <span id="auto-date">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Rep selector (first-time pick, remembered after) -->
+  <div class="rep-bar">
+    <label for="rep-select">Rep:</label>
+    <select id="rep-select" onchange="saveRep()">
+      <option value="">— Select your name —</option>
+      <option>AMINA</option>
+      <option>ANNE</option>
+      <option>CHRISTIAN</option>
+      <option>DANFORD</option>
+      <option>ESTHER</option>
+      <option>EVELYNE</option>
+      <option>GEORGE</option>
+      <option>GRASIA</option>
+      <option>KELVIN MSUYA</option>
+      <option>KIHEMBA</option>
+      <option>LISSA</option>
+      <option>MARIAM KAVINDI</option>
+      <option>MONICA</option>
+      <option>MWANAIDI</option>
+      <option>MWANGAZA</option>
+      <option>NEEMA</option>
+      <option>PATRICK</option>
+      <option>REHEMA KADANGA</option>
+      <option>SARAH</option>
+    </select>
+  </div>
+
+  <!-- Form -->
+  <div class="form-body">
+    <form id="daily-form" onsubmit="submitForm(event)">
+
+      <div class="field-row">
+        <div class="field">
+          <label>Region <span class="req">*</span></label>
+          <select name="region" required>
+            <option value="">Select...</option>
+            <option>Dar</option>
+            <option>Arusha</option>
+            <option>Mwanza</option>
+            <option>Mbeya</option>
+            <option>Dodoma</option>
+            <option>Tabora</option>
+            <option>Tanga</option>
+            <option>Morogoro</option>
+            <option>Lindi</option>
+            <option>Kigoma</option>
+            <option>Songea</option>
+            <option>Iringa</option>
+            <option>Mpanda</option>
+            <option>Bukoba</option>
+            <option>Rujewa</option>
+            <option>Zanzibar</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Route / Area <span class="req">*</span></label>
+          <input type="text" name="route" placeholder="e.g. Kariakoo" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Total Sales Ex-VAT (TZS) <span class="req">*</span></label>
+        <div class="money-wrap">
+          <span class="prefix">TZS</span>
+          <input type="number" name="sales" placeholder="0" min="0" required>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Customers Visited</label>
+          <input type="number" name="customers_visited" placeholder="0" min="0">
+        </div>
+        <div class="field">
+          <label>Customers Purchased</label>
+          <input type="number" name="customers_purchased" placeholder="0" min="0">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Notes</label>
+        <textarea name="notes" placeholder="Any issues, market observations, etc."></textarea>
+        <div class="field-hint">Optional — stock shortages, competitor activity, anything relevant</div>
+      </div>
+
+      <hr class="divider">
+
+      <button type="submit" class="btn-submit" id="submit-btn">Submit Daily Report</button>
+
+      <div class="feedback success" id="msg-success">
+        ✅ Submitted successfully! Your report for <strong id="confirm-date"></strong> has been recorded.
+      </div>
+      <div class="feedback error" id="msg-error">
+        ❌ <span id="error-text">Something went wrong. Please try again.</span>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  // ── CONFIGURATION ────────────────────────────────────────────────────────
+  // Replace this URL with your Google Apps Script Web App URL after deployment
+  const SCRIPT_URL = 'Yhttps://script.google.com/macros/s/AKfycby6U8TAHExf08FMhRryyzB83Y18M5BmOQ4uBYK0tl1f247oeGATi6jORmN5Vx9ERAzE/exec';
+  // ────────────────────────────────────────────────────────────────────────
+
+  // Auto date display
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('en-GB', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  });
+  document.getElementById('auto-date').textContent = dateStr;
+
+  // Remember rep name across sessions (localStorage)
+  const repSelect = document.getElementById('rep-select');
+  const savedRep = localStorage.getItem('solutech_rep');
+  if (savedRep) repSelect.value = savedRep;
+
+  function saveRep() {
+    localStorage.setItem('solutech_rep', repSelect.value);
+  }
+
+  // Form submission
+  async function submitForm(e) {
+    e.preventDefault();
+
+    const rep = repSelect.value;
+    if (!rep) {
+      showError('Please select your name at the top before submitting.');
+      return;
+    }
+
+    const form    = document.getElementById('daily-form');
+    const btn     = document.getElementById('submit-btn');
+    const data    = new FormData(form);
+
+    // Build payload
+    const payload = {
+      rep_name:            rep,
+      date:                today.toLocaleDateString('en-GB'),   // DD/MM/YYYY
+      timestamp:           today.toISOString(),
+      region:              data.get('region'),
+      route:               data.get('route'),
+      sales_ex_vat:        data.get('sales'),
+      customers_visited:   data.get('customers_visited') || 0,
+      customers_purchased: data.get('customers_purchased') || 0,
+      notes:               data.get('notes') || ''
+    };
+
+    // UI: loading state
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Submitting...';
+    hideMessages();
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      // no-cors returns opaque response — assume success if no error thrown
+      showSuccess();
+      form.reset();
+      repSelect.value = localStorage.getItem('solutech_rep') || '';
+      document.getElementById('confirm-date').textContent =
+        today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    } catch (err) {
+      showError('Network error. Check your connection and try again.');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = 'Submit Daily Report';
+    }
+  }
+
+  function showSuccess() {
+    document.getElementById('msg-success').style.display = 'block';
+    document.getElementById('msg-error').style.display   = 'none';
+  }
+  function showError(msg) {
+    document.getElementById('error-text').textContent    = msg;
+    document.getElementById('msg-error').style.display  = 'block';
+    document.getElementById('msg-success').style.display = 'none';
+  }
+  function hideMessages() {
+    document.getElementById('msg-success').style.display = 'none';
+    document.getElementById('msg-error').style.display   = 'none';
+  }
+</script>
+
+</body>
+</html>
