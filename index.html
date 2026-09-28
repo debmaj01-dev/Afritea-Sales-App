@@ -7,59 +7,50 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
   *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    font-family:'Inter',sans-serif;
-    background:linear-gradient(145deg,#0d2b4e 0%,#1F4E79 50%,#2E75B6 100%);
-    min-height:100vh;display:flex;align-items:flex-start;
-    justify-content:center;padding:28px 16px 60px;
-  }
+  body{font-family:'Inter',sans-serif;background:linear-gradient(145deg,#0d2b4e 0%,#1F4E79 50%,#2E75B6 100%);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:28px 16px 60px}
   .card{background:#fff;border-radius:16px;box-shadow:0 4px 32px rgba(31,78,121,0.15);width:100%;max-width:420px;overflow:hidden}
-
-  /* Header */
   .hdr{background:#1F4E79;padding:26px 28px 20px;position:relative;overflow:hidden}
   .hdr::after{content:'';position:absolute;right:-24px;top:-24px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.06)}
   .hdr-brand{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px}
   .hdr h1{font-size:20px;font-weight:700;color:#fff;line-height:1.2}
   .hdr-date{margin-top:11px;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.13);border-radius:30px;padding:5px 14px;font-size:13px;font-weight:500;color:rgba(255,255,255,0.92)}
-
-  /* Rep banner */
   .rep-band{background:#EBF3FB;border-bottom:1px solid #d1dce8;padding:14px 28px}
   .rep-band .name{font-size:16px;font-weight:700;color:#1F4E79;margin-bottom:4px}
   .rep-band .meta{font-size:12px;color:#6b7280;display:flex;gap:14px}
-
-  /* Error */
   .err-wrap{padding:36px 28px;text-align:center}
   .err-wrap h2{color:#C0392B;font-size:17px;margin-bottom:10px}
   .err-wrap p{font-size:14px;color:#6b7280;line-height:1.6}
-
-  /* Form */
   .body{padding:24px 28px 30px}
-  .field{margin-bottom:20px}
+  .field{margin-bottom:18px}
   .field label{display:block;font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
   .field input{width:100%;border:1.5px solid #d1dce8;border-radius:10px;padding:14px 16px;font-family:'Inter',sans-serif;font-size:15px;color:#1a1a2e;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}
   .field input:focus{border-color:#2E75B6;box-shadow:0 0 0 3px rgba(46,117,182,0.12)}
   .money{position:relative}
   .money .pfx{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;color:#6b7280;pointer-events:none}
-  .money input{padding-left:54px!important;font-weight:700;font-size:18px;letter-spacing:.3px}
-
-  .btn{width:100%;background:#1F4E79;color:#fff;border:none;border-radius:10px;padding:16px;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;margin-top:6px}
+  .money input{padding-left:54px!important;font-weight:600;font-size:16px}
+  .money.total input{font-weight:700;font-size:18px}
+  .section{font-size:12px;font-weight:700;color:#1F4E79;text-transform:uppercase;letter-spacing:1px;margin:6px 0 14px;padding-top:16px;border-top:1px solid #d1dce8}
+  .other-box{display:flex;justify-content:space-between;align-items:center;background:#EBF3FB;border:1.5px dashed #9fbfdd;border-radius:10px;padding:14px 16px}
+  .other-box .lbl{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.8px}
+  .other-box .lbl small{display:block;font-weight:500;text-transform:none;letter-spacing:0;margin-top:3px;font-size:11px}
+  .other-box .val{font-size:18px;font-weight:700;color:#1F4E79}
+  .other-box.bad{background:#fdf0ee;border-color:#f0a89e}
+  .other-box.bad .val{color:#C0392B}
+  .warn{display:none;font-size:13px;color:#C0392B;font-weight:500;margin-top:8px}
+  .btn{width:100%;background:#1F4E79;color:#fff;border:none;border-radius:10px;padding:16px;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;margin-top:20px}
   .btn:hover{background:#163d61}
   .btn:active{transform:scale(.98)}
   .btn:disabled{background:#93b4d0;cursor:not-allowed}
-
   .msg{display:none;margin-top:14px;border-radius:10px;padding:14px 16px;font-size:14px;font-weight:500;line-height:1.5}
   .msg.ok{background:#e8f8f1;border:1.5px solid #a3d9bc;color:#1A7A4A}
   .msg.err{background:#fdf0ee;border:1.5px solid #f0a89e;color:#C0392B}
-
   .spin{display:inline-block;width:15px;height:15px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px}
   @keyframes spin{to{transform:rotate(360deg)}}
   .req{color:#e74c3c;margin-left:2px}
-  hr{border:none;border-top:1px solid #d1dce8;margin:20px 0}
 </style>
 </head>
 <body>
 <div class="card">
-
   <div class="hdr">
     <div class="hdr-brand">Afritea Field App</div>
     <h1>Daily Sales Report</h1>
@@ -71,10 +62,7 @@
 
   <div id="rep-band" class="rep-band" style="display:none">
     <div class="name" id="d-name"></div>
-    <div class="meta">
-      <span>📍 <span id="d-region"></span></span>
-      <span>🚛 <span id="d-truck"></span></span>
-    </div>
+    <div class="meta"><span>📍 <span id="d-region"></span></span><span>🚛 <span id="d-truck"></span></span></div>
   </div>
 
   <div id="err-wrap" class="err-wrap" style="display:none">
@@ -85,7 +73,6 @@
   <div id="form-wrap" style="display:none">
     <div class="body">
       <form id="f" onsubmit="send(event)">
-
         <div class="field">
           <label>Route / Area worked today <span class="req">*</span></label>
           <input type="text" name="route" placeholder="e.g. Kariakoo, Mbagala..." required autocomplete="off">
@@ -93,70 +80,114 @@
 
         <div class="field">
           <label>Total Sales Ex-VAT <span class="req">*</span></label>
-          <div class="money">
-            <span class="pfx">TZS</span>
-            <input type="number" name="sales" placeholder="0" min="0" required>
+          <div class="money total"><span class="pfx">TZS</span>
+            <input type="number" inputmode="numeric" id="total" name="total" placeholder="0" min="0" step="any" required oninput="calc()">
           </div>
         </div>
 
-        <hr>
-        <button class="btn" id="btn" type="submit">Submit Report</button>
+        <div class="section">Sales by category (Ex-VAT)</div>
 
+        <div class="field">
+          <label>Tea Sales <span class="req">*</span></label>
+          <div class="money"><span class="pfx">TZS</span>
+            <input type="number" inputmode="numeric" id="tea" name="tea" placeholder="0" min="0" step="any" required oninput="calc()">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Coffee Sales <span class="req">*</span></label>
+          <div class="money"><span class="pfx">TZS</span>
+            <input type="number" inputmode="numeric" id="coffee" name="coffee" placeholder="0" min="0" step="any" required oninput="calc()">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Samana Sales <span class="req">*</span></label>
+          <div class="money"><span class="pfx">TZS</span>
+            <input type="number" inputmode="numeric" id="samana" name="samana" placeholder="0" min="0" step="any" required oninput="calc()">
+          </div>
+        </div>
+
+        <div class="other-box" id="other-box">
+          <div class="lbl">Other Sales<small>Calculated automatically</small></div>
+          <div class="val">TZS <span id="other">0</span></div>
+        </div>
+        <div class="warn" id="warn">Tea + Coffee + Samana is more than Total Sales. Please check your figures.</div>
+
+        <button class="btn" id="btn" type="submit">Submit Report</button>
         <div class="msg ok" id="m-ok">✅ Submitted! Report recorded for <span id="c-name"></span>.</div>
         <div class="msg err" id="m-err">❌ <span id="e-txt">Something went wrong. Try again.</span></div>
       </form>
     </div>
   </div>
-
 </div>
+
 <script>
   const SCRIPT = 'https://script.google.com/macros/s/AKfycbyhlsR0taqqJGvEu4P-TDlWrLoNQK24z_svUQcYiNJxM67KqKzUUgFLlL31dT-SQCIJNg/exec';
-
   const today = new Date();
   document.getElementById('auto-date').textContent = today.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
-  const p      = new URLSearchParams(window.location.search);
-  const repName   = p.get('rep');
-  const repRegion = p.get('region');
-  const repTruck  = p.get('truck');
+  const p = new URLSearchParams(window.location.search);
+  const repName = p.get('rep'), repRegion = p.get('region'), repTruck = p.get('truck');
 
   if (repName && repRegion) {
-    document.getElementById('d-name').textContent   = repName;
+    document.getElementById('d-name').textContent = repName;
     document.getElementById('d-region').textContent = repRegion;
-    document.getElementById('d-truck').textContent  = repTruck || '—';
-    document.getElementById('c-name').textContent   = repName.split(' ')[0];
-    document.getElementById('rep-band').style.display  = 'block';
+    document.getElementById('d-truck').textContent = repTruck || '—';
+    document.getElementById('c-name').textContent = repName.split(' ')[0];
+    document.getElementById('rep-band').style.display = 'block';
     document.getElementById('form-wrap').style.display = 'block';
   } else {
     document.getElementById('err-wrap').style.display = 'block';
   }
 
+  const num = id => parseFloat(document.getElementById(id).value) || 0;
+
+  function calc() {
+    const other = num('total') - num('tea') - num('coffee') - num('samana');
+    const bad = other < 0;
+    document.getElementById('other').textContent = Math.round(other).toLocaleString('en-US');
+    document.getElementById('other-box').classList.toggle('bad', bad);
+    document.getElementById('warn').style.display = bad ? 'block' : 'none';
+    return other;
+  }
+
   async function send(e) {
     e.preventDefault();
-    const d   = new FormData(document.getElementById('f'));
+    const other = calc();
+    const okEl = document.getElementById('m-ok'), errEl = document.getElementById('m-err');
+    okEl.style.display = 'none'; errEl.style.display = 'none';
+
+    if (other < 0) {
+      document.getElementById('e-txt').textContent = 'Category sales exceed Total Sales. Please correct before submitting.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    const route = document.querySelector('[name=route]').value;
     const btn = document.getElementById('btn');
     btn.disabled = true;
     btn.innerHTML = '<span class="spin"></span>Submitting...';
-    document.getElementById('m-ok').style.display = 'none';
-    document.getElementById('m-err').style.display = 'none';
+
     try {
       await fetch(SCRIPT, {
-        method:'POST', mode:'no-cors',
-        headers:{'Content-Type':'application/json'},
+        method: 'POST', mode: 'no-cors',
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          date:        today.toLocaleDateString('en-GB'),
-          rep_name:    repName,
-          region:      repRegion,
-          truck:       repTruck || '',
-          route:       d.get('route'),
-          sales_ex_vat: d.get('sales')
+          date: today.toLocaleDateString('en-GB'),
+          rep_name: repName, region: repRegion, truck: repTruck || '',
+          route: route,
+          sales_ex_vat: num('total'),
+          tea: num('tea'), coffee: num('coffee'), samana: num('samana'),
+          other: other
         })
       });
-      document.getElementById('m-ok').style.display = 'block';
+      okEl.style.display = 'block';
       document.getElementById('f').reset();
-    } catch(err) {
+      calc();
+    } catch (err) {
       document.getElementById('e-txt').textContent = 'Network error. Check connection and try again.';
-      document.getElementById('m-err').style.display = 'block';
+      errEl.style.display = 'block';
     } finally {
       btn.disabled = false;
       btn.innerHTML = 'Submit Report';
