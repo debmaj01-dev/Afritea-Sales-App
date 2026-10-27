@@ -108,11 +108,18 @@
           </div>
         </div>
 
+        <div class="field">
+          <label>Clover Sales <span class="req">*</span></label>
+          <div class="money"><span class="pfx">TZS</span>
+            <input type="number" inputmode="numeric" id="clover" name="clover" placeholder="0" min="0" step="any" required oninput="calc()">
+          </div>
+        </div>
+
         <div class="other-box" id="other-box">
           <div class="lbl">Other Sales<small>Calculated automatically</small></div>
           <div class="val">TZS <span id="other">0</span></div>
         </div>
-        <div class="warn" id="warn">Tea + Coffee + Samana is more than Total Sales. Please check your figures.</div>
+        <div class="warn" id="warn">Tea + Coffee + Samana + Clover is more than Total Sales. Please check your figures.</div>
 
         <button class="btn" id="btn" type="submit">Submit Report</button>
         <div class="msg ok" id="m-ok">✅ Submitted! Report recorded for <span id="c-name"></span>.</div>
@@ -144,7 +151,7 @@
   const num = id => parseFloat(document.getElementById(id).value) || 0;
 
   function calc() {
-    const other = num('total') - num('tea') - num('coffee') - num('samana');
+    const other = num('total') - num('tea') - num('coffee') - num('samana') - num('clover');
     const bad = other < 0;
     document.getElementById('other').textContent = Math.round(other).toLocaleString('en-US');
     document.getElementById('other-box').classList.toggle('bad', bad);
@@ -178,7 +185,7 @@
           rep_name: repName, region: repRegion, truck: repTruck || '',
           route: route,
           sales_ex_vat: num('total'),
-          tea: num('tea'), coffee: num('coffee'), samana: num('samana'),
+          tea: num('tea'), coffee: num('coffee'), samana: num('samana'), clover: num('clover'),
           other: other
         })
       });
